@@ -22,7 +22,16 @@ const controls = createOrbitControls(camera, renderer.domElement);
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('jsm/libs/draco/gltf/');
 
-loadModel('cat_sitting.glb');
+// List of cat model paths
+const catModels = [
+    'cat_sitting.glb',
+    'cat_black.glb',
+    'sphynx_cat.glb',
+    'orange_cat.glb'
+];
+
+const randomCatModel = catModels[Math.floor(Math.random() * catModels.length)];
+loadModel(randomCatModel);
 
 window.onresize = onWindowResize;
 
@@ -79,9 +88,22 @@ function loadModel(modelPath) {
         modelPath,
         (gltf) => {
             const model = gltf.scene;
-            model.position.set(1, 1, 0);
-            model.scale.set(0.02, 0.02, 0.02);
             scene.add(model);
+
+            if (modelPath === 'cat_sitting.glb') {
+                model.scale.set(0.025, 0.025, 0.025);
+                controls.target.set(0, 0, 0);
+            } else if (modelPath === 'cat_black.glb') {
+                model.scale.set(0.15, 0.15, 0.15);
+                controls.target.set(0, 1.2, 0);
+            } else if (modelPath === 'sphynx_cat.glb') {
+                model.scale.set(5.0, 5.0, 5.0);
+                controls.target.set(0, 0.2, 0);
+            } else if (modelPath === 'orange_cat.glb') {
+                model.scale.set(0.00003, 0.00003, 0.00003);
+                controls.target.set(0, 1.2, 0);
+                model.rotation.x = Math.PI;
+            }
 
             updateCatInfo('Whiskers', 'Curious, Playful, Mischievous', 'Chasing laser pointers');
             console.log('Model added');
