@@ -5,6 +5,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 const container = document.getElementById('container');
+const catInfo = document.getElementById('cat-info');
 
 const renderer = createRenderer();
 container.appendChild(renderer.domElement);
@@ -62,10 +63,11 @@ function createCamera() {
 
 function createOrbitControls(camera, domElement) {
     const controls = new OrbitControls(camera, domElement);
-    controls.target.set(0, 0.5, 0);
+    controls.target.set(0, 1, 0);
     controls.update();
     controls.enablePan = false;
     controls.enableDamping = true;
+    controls.enableZoom = false;
     return controls;
 }
 
@@ -73,15 +75,22 @@ function loadModel(modelPath) {
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
-    loader.load(modelPath, (gltf) => {
-        const model = gltf.scene;
-        model.position.set(1, 1, 0);
-        model.scale.set(0.02, 0.02, 0.02);
-        scene.add(model);
-        console.log('Model added');
-    }, undefined, (error) => {
-        console.error('Error loading model:', error);
-    });
+    loader.load(
+        modelPath,
+        (gltf) => {
+            const model = gltf.scene;
+            model.position.set(1, 1, 0);
+            model.scale.set(0.02, 0.02, 0.02);
+            scene.add(model);
+
+            updateCatInfo('Whiskers', 'Curious, Playful, Mischievous', 'Chasing laser pointers');
+            console.log('Model added');
+        },
+        undefined,
+        (error) => {
+            console.error('Error loading model:', error);
+        }
+    );
 }
 
 function onWindowResize() {
@@ -93,4 +102,13 @@ function onWindowResize() {
 function animate() {
     controls.update();
     renderer.render(scene, camera);
+}
+
+function updateCatInfo(name, personality, favoriteActivity) {
+    catInfo.innerHTML = `
+        <h2>Cat Information</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Personality:</strong> ${personality}</p>
+        <p><strong>Favorite Activity:</strong> ${favoriteActivity}</p>
+    `;
 }
