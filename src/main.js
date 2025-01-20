@@ -4,6 +4,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
+import { catInfoData } from './catInfoData.js';
+
 const container = document.getElementById('container');
 const catInfo = document.getElementById('cat-info');
 
@@ -90,22 +92,16 @@ function loadModel(modelPath) {
             const model = gltf.scene;
             scene.add(model);
 
-            if (modelPath === 'cat_sitting.glb') {
-                model.scale.set(0.025, 0.025, 0.025);
-                controls.target.set(0, 0, 0);
-            } else if (modelPath === 'cat_black.glb') {
-                model.scale.set(0.15, 0.15, 0.15);
-                controls.target.set(0, 1.2, 0);
-            } else if (modelPath === 'sphynx_cat.glb') {
-                model.scale.set(5.0, 5.0, 5.0);
-                controls.target.set(0, 0.2, 0);
-            } else if (modelPath === 'orange_cat.glb') {
-                model.scale.set(0.00003, 0.00003, 0.00003);
-                controls.target.set(0, 1.2, 0);
-                model.rotation.x = Math.PI;
-            }
+            if (catInfoData[modelPath]) {
+                const catData = catInfoData[modelPath];
+                model.scale.copy(catData.scale);
+                controls.target.copy(catData.target);
+                if (catData.rotation) {
+                    model.rotation.copy(catData.rotation);
+                }
 
-            updateCatInfo('Whiskers', 'Curious, Playful, Mischievous', 'Chasing laser pointers');
+                updateCatInfo(catData.name, catData.personality, catData.favoriteActivity, catData.quirkyTrait);
+            }
             console.log('Model added');
         },
         undefined,
@@ -126,11 +122,12 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-function updateCatInfo(name, personality, favoriteActivity) {
+function updateCatInfo(name, personality, favoriteActivity, quirkyTrait) {
     catInfo.innerHTML = `
         <h2>Cat Information</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Personality:</strong> ${personality}</p>
         <p><strong>Favorite Activity:</strong> ${favoriteActivity}</p>
+        <p><strong>Quirky Trait:</strong> ${quirkyTrait}</p>
     `;
 }
