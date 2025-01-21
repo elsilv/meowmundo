@@ -98,6 +98,28 @@
                 color: #4E4B5C;
                 margin: 15px 0 15px 20px;
             }
+
+            #loading-heart {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 50px;
+                animation: bump 1s infinite;
+                display: none;
+            }
+
+            @keyframes bump {
+                0% {
+                    transform: translate(-50%, -50%) scale(1);
+                }
+                50% {
+                    transform: translate(-50%, -50%) scale(1.2);
+                }
+                100% {
+                    transform: translate(-50%, -50%) scale(1);
+                }
+            }
         </style>
 	</head>
 	<body>
@@ -110,6 +132,10 @@
                 <button>Play</button>
             </div>
         </div>
+    </div>
+
+    <div id="loading-heart">
+        <span>❤️</span>
     </div>
 
     <div id="cat-info"></div>

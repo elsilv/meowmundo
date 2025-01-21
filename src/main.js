@@ -86,11 +86,15 @@ function loadModel(modelPath) {
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
+    document.getElementById('loading-heart').style.display = 'block';
+
     loader.load(
         modelPath,
         (gltf) => {
             const model = gltf.scene;
             scene.add(model);
+
+            document.getElementById('loading-heart').style.display = 'none';
 
             if (catInfoData[modelPath]) {
                 const catData = catInfoData[modelPath];
@@ -107,6 +111,7 @@ function loadModel(modelPath) {
         undefined,
         (error) => {
             console.error('Error loading model:', error);
+            document.getElementById('loading-heart').style.display = 'none';
         }
     );
 }
