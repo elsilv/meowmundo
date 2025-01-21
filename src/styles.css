@@ -111,3 +111,22 @@ button:hover {
         transform: translate(-50%, -50%) scale(1);
     }
 }
+
+#purr-indicator {
+    display: none;
+    text-align: center;
+    margin-top: 200px;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: #4E4B5C;
+    animation: fadeInOut 2s infinite;
+    z-index: 10;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
