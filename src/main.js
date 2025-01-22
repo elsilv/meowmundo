@@ -10,7 +10,12 @@ const container = document.getElementById('container');
 const catInfo = document.getElementById('cat-info');
 
 const petButton = document.getElementById('pet-button');
+const playButton = document.getElementById('play-button');
 const purrIndicator = document.getElementById('purr-indicator');
+
+let laserDot = null;
+let laserAnimation = null;
+let isPlaying = false;
 
 const renderer = createRenderer();
 container.appendChild(renderer.domElement);
@@ -111,6 +116,8 @@ function loadModel(modelPath) {
             }
 
             petButton.addEventListener('click', () => startPurring(model));
+            playButton.addEventListener('click', () => startPlay(model));
+
             console.log('Model added');
         },
         undefined,
@@ -149,6 +156,65 @@ function animateCatPurring(cat) {
     setTimeout(() => {
         clearInterval(purringAnimation);
         cat.scale.copy(originalScale);
+    }, 5000);
+}
+
+function startPlay(model) {
+    if (isPlaying) return;
+    isPlaying = true;
+
+    const laserGeometry = new THREE.SphereGeometry(0.05, 16, 16);
+    const laserMaterial = new THREE.MeshBasicMaterial({ color: 'red' });
+    laserDot = new THREE.Mesh(laserGeometry, laserMaterial);
+    scene.add(laserDot);
+
+    animateLaserDot();
+    moveCatToLaser(model);
+}
+
+function endPlay() {
+    if (!isPlaying) return;
+    isPlaying = false;
+
+    if (laserDot) {
+        scene.remove(laserDot);
+        laserDot = null;
+    }
+
+    clearInterval(laserAnimation);
+    laserAnimation = null;
+}
+
+function animateLaserDot() {
+    if (laserAnimation) clearInterval(laserAnimation);
+
+    laserAnimation = setInterval(() => {
+        const x = (Math.random() - 0.5) * 10;
+        const y = 0.5;
+        const z = (Math.random() - 0.5) * 10;
+
+        if (laserDot) laserDot.position.set(x, y, z);
+    }, 500);
+}
+
+function moveCatToLaser(catModel) {
+    const targetPosition = new THREE.Vector3();
+
+    function followLaser() {
+        if (!laserDot || !isPlaying) return;
+        targetPosition.copy(laserDot.position);
+        catModel.position.lerp(targetPosition, 0.05);
+        catModel.lookAt(laserDot.position);
+    }
+
+    renderer.setAnimationLoop(() => {
+        followLaser();
+        renderer.render(scene, camera);
+    });
+
+    setTimeout(() => {
+        endPlay();
+        renderer.setAnimationLoop(animate);
     }, 5000);
 }
 
