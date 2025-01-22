@@ -33,8 +33,7 @@ dracoLoader.setDecoderPath('jsm/libs/draco/gltf/');
 const catModels = [
     'cat_sitting.glb',
     'cat_black.glb',
-    'sphynx_cat.glb',
-    'orange_cat.glb'
+    'sphynx_cat.glb'
 ];
 
 const randomCatModel = catModels[Math.floor(Math.random() * catModels.length)];

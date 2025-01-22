@@ -24,14 +24,5 @@ export const catInfoData = {
         quirkyTrait: 'She loves to sunbathe and has a special spot by the window to soak up every ray of sunlight.',
         scale: new THREE.Vector3(5.0, 5.0, 5.0),
         target: new THREE.Vector3(0, 0.1, 0)
-    },
-    'orange_cat.glb': {
-        name: 'Milo',
-        personality: 'Energetic, mischievous, and loves attention.',
-        favoriteActivity: 'Chasing after toys and napping in the coziest spots.',
-        quirkyTrait: 'He’ll curl up into the tiniest ball possible, even if the space seems too small for him.',
-        scale: new THREE.Vector3(0.00003, 0.00003, 0.00003),
-        target: new THREE.Vector3(0, 1.2, 0),
-        rotation: new THREE.Euler(Math.PI, 0, 0)
     }
 };
