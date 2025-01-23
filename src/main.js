@@ -6,13 +6,15 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 import { catInfoData } from './catInfoData.js';
 import { startPurring } from './catPurring.js';
-import { startPlay } from './catPlay.js'
+import { startPlay } from './catPlay.js';
+import { startEat } from "./catEat.js";
 
 const container = document.getElementById('container');
 const catInfo = document.getElementById('cat-info');
 
 const petButton = document.getElementById('pet-button');
 const playButton = document.getElementById('play-button');
+const feedButton = document.getElementById('feed-button');
 
 const renderer = createRenderer();
 container.appendChild(renderer.domElement);
@@ -20,6 +22,13 @@ container.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 scene.background = createGradientTexture();
 scene.environment = createEnvironment();
+
+const ambientLight = new THREE.AmbientLight(0x404040, 1);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.set(5, 5, 5).normalize();
+scene.add(directionalLight);
 
 const camera = createCamera();
 camera.position.set(5, 2, 8);
@@ -113,6 +122,7 @@ function loadModel(modelPath) {
 
             petButton.addEventListener('click', () => startPurring(model));
             playButton.addEventListener('click', () => startPlay(model, renderer, scene, camera, animate));
+            feedButton.addEventListener('click', () => startEat(scene, model));
 
             console.log('Model added');
         },

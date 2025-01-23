@@ -112,7 +112,7 @@ button:hover {
     }
 }
 
-#purr-indicator {
+#purr-indicator, #eat-indicator {
     display: none;
     text-align: center;
     margin-top: 200px;
